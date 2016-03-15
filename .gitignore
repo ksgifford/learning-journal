@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Mac OSX
+.DS_Store
+
 # Distribution / packaging
 .Python
 env/
@@ -17,9 +20,12 @@ eggs/
 .eggs/
 lib/
 lib64/
+bin/
+include/
 parts/
 sdist/
 var/
+pip-selfcheck.json
 *.egg-info/
 .installed.cfg
 *.egg
