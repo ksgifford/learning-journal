@@ -9,7 +9,6 @@ __pycache__/
 # Mac OSX
 .DS_Store
 .idea
-.cache
 
 # Distribution / packaging
 .Python
