@@ -3,7 +3,6 @@ from sqlalchemy import (
     Column,
     Index,
     Integer,
-    Text,
     Unicode,
     DateTime,
 )
@@ -22,6 +21,7 @@ Base = declarative_base()
 
 
 class Entry(Base):
+    """Class for creating database blog entries."""
     __tablename__ = 'entries'
     id = Column(Integer, primary_key=True)
     title = Column(Unicode(128), unique=True)
