@@ -1,10 +1,10 @@
 # coding=utf-8
 
-from journalapp.models import MyModel, DBSession
+from journalapp.models import Entry, DBSession
 
 
-def test_create_mymodel(Base):
-    new_model = MyModel(name="jill", value=42)
+def test_create_entry(session):
+    new_model = Entry(name="jill", value=42)
     assert new_model.id is None
     DBSession.add(new_model)
     DBSession.flush()
