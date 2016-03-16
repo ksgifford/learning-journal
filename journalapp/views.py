@@ -1,21 +1,35 @@
-from pyramid.response import Response
+# from pyramid.response import Response
 from pyramid.view import view_config
 
-from sqlalchemy.exc import DBAPIError
+# from sqlalchemy.exc import DBAPIError
+#
+# from .models import (
+#     DBSession,
+#     Entry,
+#     )
 
-from .models import (
-    DBSession,
-    Entry,
-    )
+
+@view_config(route_name='blog_post', renderer='templates/blog_base.jinja2', match_param='blog=somevalue')
+def blog_view_somevalue(request):
+    return request.matchdict
+
+@view_config(route_name='blog_post', renderer='templates/blog_base.jinja2', match_param='blog=anothervalue')
+def blog_view_anothervalue(request):
+    return request.matchdict
+
+@view_config(route_name='blog_post', renderer='templates/blog_base.jinja2')
+def blog_view_none(request):
+    return request.matchdict
 
 
-@view_config(route_name='home', renderer='templates/mytemplate.pt')
-def my_view(request):
-    try:
-        one = DBSession.query(Entry).filter(Entry.name == 'one').first()
-    except DBAPIError:
-        return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {'one': one, 'project': 'journalapp'}
+# Sample view config
+# @view_config(route_name='home', renderer='templates/mytemplate.pt')
+# def my_view(request):
+#     try:
+#         one = DBSession.query(Entry).filter(Entry.name == 'one').first()
+#     except DBAPIError:
+#         return Response(conn_err_msg, content_type='text/plain', status_int=500)
+#     return {'one': one, 'project': 'journalapp'}
 
 
 conn_err_msg = """\
