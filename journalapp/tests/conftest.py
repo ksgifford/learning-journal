@@ -2,10 +2,10 @@
 import pytest
 from sqlalchemy import create_engine
 
-from testapp.models import DBSession, Base
+from journalapp.models import DBSession, Base
 
 
-TEST_DATABASE_URL = 'sqlite:////tmp/test_db.sqlite'
+TEST_DATABASE_URL = 'postgresql+psycopg2://KSGifford:@localhost:5432'
 
 
 @pytest.fixture(scope='session')
@@ -35,3 +35,9 @@ def dbtransaction(request, sqlengine):
     request.addfinalizer(teardown)
 
     return connection
+
+
+@pytest.fixture()
+def session(dbtransaction):
+    from journalapp.models import DBSession
+    return DBSession

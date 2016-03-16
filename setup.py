@@ -60,6 +60,6 @@ setup(name='journalapp',
       [paste.app_factory]
       main = journalapp:main
       [console_scripts]
-      initialize_journalapp_db = journalapp.scripts.initializedb:main
+      initializedb = journalapp.scripts.initializedb:main
       """,
       )
