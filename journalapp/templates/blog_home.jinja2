@@ -2,9 +2,9 @@
 {% extends "blog_base.jinja2"  %}
 {%  block show_item %}
     <p>In: Blog_home</p>
-      <ul id="blog_listings">
-      {% for pkey in blog_posts %}
-        <li><a href="/entry/{{ pkey }}">{{ title }}</a></li>
-      {% endfor %}
-      </ul>
+    <ul id="blog_listings">
+        {% for post in blog_posts.values() %}
+            <li><a href="/entry/{{ post.id }}">{{ post.title }} - {{ post.posted }}</a></li>
+        {% endfor %}
+    </ul>
 {% endblock %}

@@ -31,7 +31,7 @@ class Entry(Base):
 
     def _query_table():
         entry_list = []
-        conn = psycopg2.connect(dbname="KSGifford", user="KSGifford")
+        conn = psycopg2.connect(dbname="jackbot", user="jackbot")
         cur = conn.cursor()
         query = 'SELECT * FROM entries;'
         cur.execute(query)
