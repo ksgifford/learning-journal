@@ -1,7 +1,10 @@
 # from pyramid.response import Response
 from pyramid.view import view_config
+from models import Entry
 
-blog_posts = []
+blog_keys = [('ID', 'Title', 'Text', 'Date')]
+blog_contents = Entry._query_table()
+blog_dict = dict(zip(blog_keys, blog_contents))
 
 
 class BlogViews:
