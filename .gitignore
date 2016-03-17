@@ -10,6 +10,9 @@ __pycache__/
 .DS_Store
 .idea
 
+# Personal Config Files
+development_kevin.ini
+
 # Distribution / packaging
 .Python
 env/

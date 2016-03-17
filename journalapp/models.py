@@ -1,11 +1,12 @@
 import datetime
-import psycopg2
+# import psycopg2
 from sqlalchemy import (
     Column,
     Index,
     Integer,
     Unicode,
     DateTime,
+    desc,
 )
 
 from sqlalchemy.ext.declarative import declarative_base
@@ -29,13 +30,16 @@ class Entry(Base):
     text = Column(Unicode())
     created = Column(DateTime, default=datetime.datetime.utcnow)
 
-    def _query_table():
-        entry_list = []
-        conn = psycopg2.connect(dbname="jackbot", user="jackbot")
-        cur = conn.cursor()
-        query = 'SELECT * FROM entries;'
-        cur.execute(query)
-        entry_list = cur.fetchall()
-        return entry_list
+
+def query_table():
+    entry_list = []
+    for instance in DBSession.query(Entry).order_by(desc(Entry.created)):
+        entry_list.append(instance)
+    # conn = psycopg2.connect(dbname="KSGifford", user="KSGifford")
+    # cur = conn.cursor()
+    # query = 'SELECT * FROM entries;'
+    # cur.execute(query)
+    # entry_list = cur.fetchall()
+    return entry_list
 
 Index('my_index', Entry.title, unique=True)

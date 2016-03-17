@@ -3,21 +3,21 @@ from pyramid.view import view_config
 from journalapp.models import Entry
 
 # blog_keys = [('ID', 'Title', 'Text', 'Date')]
-blog_contents = Entry._query_table()
+# blog_contents = Entry._query_table()
 
 blog_posts = {}
 
-for each in blog_contents:
-    blog_posts.update(
-        {each[0]: {
-            "id": each[0],
-            "title": each[1],
-            "content": each[2],
-            "posted": each[3]
-            }
-        }
-    )
-
+# for each in blog_contents:
+#     blog_posts.update(
+#         {each[0]: {
+#             "id": each[0],
+#             "title": each[1],
+#             "content": each[2],
+#             "posted": each[3]
+#             }
+#         }
+#     )
+#
 
 class BlogViews:
     def __init__(self, request):
