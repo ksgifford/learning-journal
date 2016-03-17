@@ -30,4 +30,4 @@ class BlogViews:
     @view_config(route_name='detail', renderer='templates/blog_detail.jinja2')
     def detail(self):
         pkey = self.request.matchdict.get("pkey")
-        return dict(post=blog_posts[pkey])
+        return dict(post=blog_posts[int(pkey)])
