@@ -8,7 +8,6 @@ __pycache__/
 
 # Mac OSX
 .DS_Store
-/journalapp
 .idea
 
 # Distribution / packaging
