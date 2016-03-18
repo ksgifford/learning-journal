@@ -24,6 +24,17 @@ def new_entry(new_title=None, new_text=None):
     return new_id
 
 
+def edit_entry(pkey, new_title, new_text):
+    update_dict = {
+        "title": new_title,
+        "text": new_text,
+    }
+    DBSession.query(Entry).filter(Entry.id==pkey).update(update_dict)
+    DBSession.flush()
+    transaction.commit()
+    return pkey
+
+
 @view_config(route_name='home', renderer='templates/blog_home.jinja2')
 def home(request):
     all_posts = query_table()
@@ -50,11 +61,11 @@ def new(request):
 @view_config(route_name='edit', renderer='templates/blog_edit.jinja2')
 def edit(request):
     pkey = request.matchdict.get("pkey")
-    one_post = query_post(pkey)
-    form = NewBlogEntryForm(request.POST, one_post)
-    if request.method == "POST" and form.validate():
-        form.populate_obj(one_post)
-        new_pkey = new_entry(form.title.data, form.text.data)
-        next_url = request.route_url('detail', pkey=new_pkey)
+    entry = DBSession.query(Entry).get(pkey)
+    form = NewBlogEntryForm(request.POST, entry)
+    if request.method == "POST":
+        form.populate_obj(entry)
+        current_pkey = edit_entry(pkey, form.title.data, form.text.data)
+        next_url = request.route_url('detail', pkey=current_pkey)
         return HTTPFound(location=next_url)
     return {'form': form}
