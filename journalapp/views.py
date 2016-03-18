@@ -14,3 +14,15 @@ def detail(request):
     pkey = request.matchdict.get("pkey")
     one_post = query_post(pkey)
     return dict(post=one_post)
+
+
+# @view_config(route_name='new', renderer='templates/blog_new.jinja2')
+# def detail():
+#     pass
+
+
+# @view_config(route_name='edit', renderer='templates/blog_nedit.jinja2')
+# def detail(request):
+#     pkey = request.matchdict.get("pkey")
+#     one_post = query_post(pkey)
+#     return dict(post=one_post)
