@@ -1,6 +1,7 @@
 # coding=utf-8
 
 from journalapp.models import Entry, DBSession
+from sqlalchemy import desc
 
 
 def test_create_entry(session):
@@ -23,7 +24,7 @@ def test_title(session):
     new_model = Entry(title="Blog Post", text="my entry goes here")
     DBSession.add(new_model)
     DBSession.flush()
-    assert DBSession.query(Entry).all()[0].title == "Blog Post"
+    assert DBSession.query(Entry).order_by(desc(Entry.created))[0].title == "Blog Post"
 
 
 def test_text(session):
@@ -31,4 +32,3 @@ def test_text(session):
     DBSession.add(new_model)
     DBSession.flush()
     assert DBSession.query(Entry).all()[0].text == "my entry goes here"
-

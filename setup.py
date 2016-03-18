@@ -25,6 +25,7 @@ tests_require = [
     'pytest',
     'pytest-watch',
     'tox',
+    'webtest',
 ]
 
 dev_requires = [
