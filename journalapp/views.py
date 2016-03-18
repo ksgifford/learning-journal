@@ -1,6 +1,24 @@
 # from pyramid.response import Response
 from pyramid.view import view_config
-from journalapp.models import query_table, query_post
+from sqlalchemy import desc
+from .models import DBSession, Entry
+import transaction
+
+
+def query_table():
+    return {'posts': DBSession.query(Entry).order_by(desc(Entry.created))}
+
+
+def query_post(post_id):
+    return {'posts': DBSession.query(Entry).filter(Entry.id == post_id)}
+
+
+def new_entry(new_title=None, new_text=None):
+    DBSession.add(Entry(title=new_title, text=new_text))
+    DBSession.flush()
+    transaction.commit()
+    new_id = DBSession.query(Entry).order_by(desc(Entry.created))[0].id
+    return new_id
 
 
 @view_config(route_name='home', renderer='templates/blog_home.jinja2')
