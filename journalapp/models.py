@@ -23,6 +23,7 @@ Base = declarative_base()
 
 class Entry(Base):
     """Class for creating database blog entries."""
+
     __tablename__ = 'entries'
     id = Column(Integer, primary_key=True)
     title = Column(Unicode(128), unique=True)
@@ -31,16 +32,11 @@ class Entry(Base):
 
 
 def query_table():
-    entry_list = []
-    for instance in DBSession.query(Entry).order_by(desc(Entry.created)):
-        entry_list.append(instance)
-    return entry_list
+    return {'id': DBSession.query(Entry).order_by(desc(Entry.created))}
 
 
 def query_post(post_id):
-    blog_post = []
-    for instance in DBSession.query(Entry).filter(Entry.id == post_id):
-        blog_post.append(instance)
-    return blog_post
+    return {'id': DBSession.query(Entry).filter(Entry.id == post_id)}
+
 
 Index('my_index', Entry.title, unique=True)
