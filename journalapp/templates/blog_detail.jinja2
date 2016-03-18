@@ -3,6 +3,8 @@
 {%  block show_item %}
 {#    <p>In: Blog_detail id passed:</p>#}
 {#    <p>{{ post }}</p>#}
+    <br />
+    <a href="{{ request.route_url('edit', pkey=post["posts"][0].id) }}">&lt;&mdash;Edit</a>
     <p>{{ post["posts"][0].title }}</p>
     <p>{{ post["posts"][0].text }}</p>
 {% endblock %}

@@ -1,17 +1,17 @@
 {% extends "blog_base.jinja2" %}
 {% block show_item %}
-  <h2>New Post</h2>
+  <h2>Edit Post</h2>
   {% if error -%}
   <p class="error"><strong>Error</strong>: {{ error }}
   {%- endif %}
   <form action="" method="POST">
     <div class="field">
-      <label for="title">Title</label>
+      <label for="title">Edit Title</label>
       <input type="text" name="title" id="title"/>
     </div>
     <div class="field">
-      <label for="text">Content</label>
-      <input type="text" name="content" id="content" style="width:200px; height:50px;" />
+      <label for="text">Edit Content</label>
+      <input type="text" name="text" id="text" style="width:200px; height:50px;" />
     </div>
     <div class="submit">
       <input type="submit" name="submit" value="submit"/>

@@ -1,7 +1,10 @@
-# from pyramid.response import Response
+# coding=utf-8
+from .models import DBSession, Entry
+from .form_new import NewBlogEntryForm
+from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 from sqlalchemy import desc
-from .models import DBSession, Entry
+
 import transaction
 
 
@@ -36,10 +39,22 @@ def detail(request):
 
 @view_config(route_name='new', renderer='templates/blog_new.jinja2')
 def new(request):
-    return dict()
+    form = NewBlogEntryForm(request.POST)
+    if request.method == "POST":
+        new_pkey = new_entry(form.title.data, form.text.data)
+        next_url = request.route_url('detail', pkey=new_pkey)
+        return HTTPFound(location=next_url)
+    return {'form': form}
 
 
 @view_config(route_name='edit', renderer='templates/blog_edit.jinja2')
 def edit(request):
     pkey = request.matchdict.get("pkey")
-    return dict(post=pkey)
+    one_post = query_post(pkey)
+    form = NewBlogEntryForm(request.POST, one_post)
+    if request.method == "POST" and form.validate():
+        form.populate_obj(one_post)
+        new_pkey = new_entry(form.title.data, form.text.data)
+        next_url = request.route_url('detail', pkey=new_pkey)
+        return HTTPFound(location=next_url)
+    return {'form': form}
