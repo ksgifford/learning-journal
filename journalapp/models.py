@@ -36,7 +36,7 @@ def query_table():
 
 
 def query_post(post_id):
-    return {'post': DBSession.query(Entry).filter(Entry.id == post_id)}
+    return {'posts': DBSession.query(Entry).filter(Entry.id == post_id)}
 
 
 Index('my_index', Entry.title, unique=True)

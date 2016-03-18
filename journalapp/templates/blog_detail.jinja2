@@ -3,6 +3,6 @@
 {%  block show_item %}
 {#    <p>In: Blog_detail id passed:</p>#}
 {#    <p>{{ post }}</p>#}
-    <p>{{ post.title }}</p>
-    <p>{{ post.content }}</p>
+    <p>{{ post["posts"][0].title }}</p>
+    <p>{{ post["posts"][0].text }}</p>
 {% endblock %}
