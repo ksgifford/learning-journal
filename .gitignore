@@ -9,6 +9,7 @@ __pycache__/
 # Mac OSX
 .DS_Store
 /templates_jeremy
+/development.ini
 .idea
 
 # Personal Config Files
@@ -30,6 +31,7 @@ include/
 parts/
 sdist/
 var/
+/development_jeremy.ini
 pip-selfcheck.json
 *.egg-info/
 .installed.cfg

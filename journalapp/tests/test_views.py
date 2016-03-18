@@ -1,8 +1,8 @@
 # coding=utf-8
 
 from journalapp.models import Entry, DBSession
-from pyramid.view import view_config
 from pyramid.testing import DummyRequest
+
 import pytest
 
 

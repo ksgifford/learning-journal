@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from journalapp.models import DBSession, Base
 
 
-TEST_DATABASE_URL = 'postgresql+psycopg2://KSGifford:@localhost:5432'
+TEST_DATABASE_URL = 'postgresql+psycopg2://jackbot:@localhost:5432'
 
 
 @pytest.fixture(scope='session')
