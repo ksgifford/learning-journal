@@ -5,6 +5,7 @@ from sqlalchemy import (
     Integer,
     Unicode,
     DateTime,
+    desc,
 )
 
 from sqlalchemy.ext.declarative import declarative_base
@@ -27,5 +28,14 @@ class Entry(Base):
     title = Column(Unicode(128), unique=True)
     text = Column(Unicode())
     created = Column(DateTime, default=datetime.datetime.utcnow)
+
+
+def query_table():
+    return {'posts': DBSession.query(Entry).order_by(desc(Entry.created))}
+
+
+def query_post(post_id):
+    return {'posts': DBSession.query(Entry).filter(Entry.id == post_id)}
+
 
 Index('my_index', Entry.title, unique=True)

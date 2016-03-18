@@ -1,0 +1,8 @@
+{# detail view #}
+{% extends "blog_base.jinja2"  %}
+{%  block show_item %}
+{#    <p>In: Blog_detail id passed:</p>#}
+{#    <p>{{ post }}</p>#}
+    <p>{{ post["posts"][0].title }}</p>
+    <p>{{ post["posts"][0].text }}</p>
+{% endblock %}
