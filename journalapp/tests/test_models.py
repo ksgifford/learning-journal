@@ -31,3 +31,4 @@ def test_text(session):
     DBSession.add(new_model)
     DBSession.flush()
     assert DBSession.query(Entry).all()[0].text == "my entry goes here"
+

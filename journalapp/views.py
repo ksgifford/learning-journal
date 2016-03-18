@@ -1,23 +1,11 @@
 # from pyramid.response import Response
 from pyramid.view import view_config
-from journalapp.models import Entry
+from journalapp.models import query_table, query_post
 
-# blog_keys = [('ID', 'Title', 'Text', 'Date')]
-# blog_contents = Entry._query_table()
+all_posts = query_table()
+one_post = query_post(8)
 
-blog_posts = {}
-
-# for each in blog_contents:
-#     blog_posts.update(
-#         {each[0]: {
-#             "id": each[0],
-#             "title": each[1],
-#             "content": each[2],
-#             "posted": each[3]
-#             }
-#         }
-#     )
-#
+# dict{blog_posts=all_posts}
 
 class BlogViews:
     def __init__(self, request):
@@ -25,9 +13,9 @@ class BlogViews:
 
     @view_config(route_name='home', renderer='templates/blog_home.jinja2')
     def home(self):
-        return dict(blog_posts=blog_posts)
+        return dict(blog_posts=all_posts)
 
     @view_config(route_name='detail', renderer='templates/blog_detail.jinja2')
     def detail(self):
         pkey = self.request.matchdict.get("pkey")
-        return dict(post=blog_posts[int(pkey)])
+        return query_post(8)

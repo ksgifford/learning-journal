@@ -32,11 +32,11 @@ class Entry(Base):
 
 
 def query_table():
-    return {'id': DBSession.query(Entry).order_by(desc(Entry.created))}
+    return {'posts': DBSession.query(Entry).order_by(desc(Entry.created))}
 
 
 def query_post(post_id):
-    return {'id': DBSession.query(Entry).filter(Entry.id == post_id)}
+    return {'post': DBSession.query(Entry).filter(Entry.id == post_id)}
 
 
 Index('my_index', Entry.title, unique=True)

@@ -33,7 +33,6 @@ def dbtransaction(request, sqlengine):
         DBSession.remove()
 
     request.addfinalizer(teardown)
-
     return connection
 
 
