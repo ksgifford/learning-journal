@@ -1,13 +1,13 @@
 # coding=utf-8
 from .models import DBSession, Entry
 from .form_new import NewBlogEntryForm
-from jinja2 import Markup
+# from jinja2 import Markup
 
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 from sqlalchemy import desc
 
-import markdown
+# import markdown
 import transaction
 
 
@@ -48,6 +48,7 @@ def home(request):
 def detail(request):
     pkey = request.matchdict.get("pkey")
     one_post = query_post(pkey)
+
     return dict(post=one_post)
 
 
@@ -74,25 +75,6 @@ def edit(request):
     return {'form': form}
 
 
-def render_markdown(content):
-    output = Markup(markdown.markdown(content))
-    return output
-
-
-# @view_config(route_name='entry_route', renderer='templates/entry.jinja2')
-# def view_post(request):
-#     entry_id = '{id}'.format(**request.matchdict)
-#     entry_data = DBSession.query(Entry).filter(Entry.id == entry_id).first()
-#     entry_data.text = render_markdown(entry_data.text)
-#     return {'entry': entry_data}
-
-
-# def render_markdown(content, linenums=False, pygments_style='default'):
-#     """Jinja2 filter to render markdown text. Copied but no understood."""
-#     ext = "codehilite(linenums={linenums}, pygments_style={pygments_style})"
-#     output = Markup(
-#         markdown.markdown(
-#             content,
-#             extensions=[ext.format(**locals()), 'fenced_code'])
-#     )
+# def render_markdown(content):
+#     output = Markup(markdown.markdown(content))
 #     return output

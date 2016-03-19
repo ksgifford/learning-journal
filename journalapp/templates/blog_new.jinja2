@@ -7,11 +7,11 @@
   <form action="" method="POST">
     <div class="field">
       <label for="title">Title</label>
-      {{ form.title() }}
+      {{ form.title() | markdown | safe }}
     </div>
     <div class="field">
       <label for="text">Content</label>
-      {{ form.text()  }}
+      {{ form.text() | markdown | safe }}
     </div>
     <div class="submit">
       <input type="submit" name="submit" value="submit"/>
