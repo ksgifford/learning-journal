@@ -5,13 +5,13 @@ import os
 from sqlalchemy import create_engine
 from journalapp.models import DBSession, Base
 
-TEST_DATABASE_URL = 'postgresql+psycopg2://jackbot:@localhost:5432/'
-# TEST_DATABASE_URL = os.environ.get('JOURNAL_APP_TEST', None)
+# DATABASE_URL = 'postgresql+psycopg2://jackbot:@localhost:5432/'
+DATABASE_URL = os.environ.get('JOURNAL_APP', None)
 
 
 @pytest.fixture(scope='session')
 def sqlengine(request):
-    engine = create_engine(TEST_DATABASE_URL)
+    engine = create_engine(DATABASE_URL)
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
 
