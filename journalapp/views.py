@@ -12,11 +12,11 @@ import transaction
 
 
 def query_table():
-    return {'posts': DBSession.query(Entry).order_by(desc(Entry.created))}
+    return DBSession.query(Entry).order_by(desc(Entry.created))
 
 
 def query_post(post_id):
-    return {'posts': DBSession.query(Entry).filter(Entry.id == post_id)}
+    return DBSession.query(Entry).filter(Entry.id == post_id)
 
 
 def new_entry(new_title=None, new_text=None):

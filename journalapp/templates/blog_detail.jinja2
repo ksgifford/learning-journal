@@ -4,7 +4,7 @@
 {#    <p>In: Blog_detail id passed:</p>#}
 {#    <p>{{ post }}</p>#}
     <br />
-    <a href="{{ request.route_url('edit', pkey=post["posts"][0].id) }}">&lt;&mdash;Edit</a>
-    <p>{{ post["posts"][0].title | markdown | safe }}</p>
-    <p>{{ post["posts"][0].text | markdown | safe }}</p>
+    <a href="{{ request.route_url('edit', pkey=post.id) }}">&lt;&mdash;Edit</a>
+    <p>{{ post.title | markdown | safe }}</p>
+    <p>{{ post.text | markdown | safe }}</p>
 {% endblock %}
