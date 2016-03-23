@@ -66,6 +66,8 @@ def new(request):
 def edit(request):
     pkey = request.matchdict.get("pkey")
     entry = DBSession.query(Entry).get(pkey)
+    if entry is None:
+        raise HTTPNotFound
     form = NewBlogEntryForm(request.POST, entry)
     if request.method == "POST":
         try:

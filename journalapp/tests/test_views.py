@@ -9,7 +9,7 @@ from journalapp.models import DBSession, Entry
 
 
 def test_home_view(dbtransaction, new_entry, dummy_get_request):
-    """Test that '/' returns a Query of Entries."""
+    """Test that the home view returns a Query of Entries."""
     from journalapp.views import home
     response_dict = home(dummy_get_request)
     entries = response_dict['blog_posts']
@@ -17,7 +17,7 @@ def test_home_view(dbtransaction, new_entry, dummy_get_request):
 
 
 def test_detail_view(dbtransaction, new_entry, dummy_get_request):
-    """Test that detail_view returns the correct Entry page."""
+    """Test that detail view returns the correct Entry page."""
     from journalapp.views import detail
     dummy_get_request.matchdict = {'pkey': new_entry.id}
     response_dict = detail(dummy_get_request)
@@ -25,7 +25,7 @@ def test_detail_view(dbtransaction, new_entry, dummy_get_request):
 
 
 def test_new_view(dbtransaction, dummy_get_request):
-    """Test that the add_view returns a dict containing the proper form."""
+    """Test that the new view returns a dict containing the proper form."""
     from journalapp.views import new
     response_dict = new(dummy_get_request)
     form = response_dict.get('form', None)
@@ -33,7 +33,7 @@ def test_new_view(dbtransaction, dummy_get_request):
 
 
 def test_edit_view(dbtransaction, new_entry, dummy_get_request):
-    """Test that the add view returns a dict containing the proper form."""
+    """Test that the edit view returns a dict containing the proper form."""
     from journalapp.views import edit
     dummy_get_request.matchdict = {'pkey': new_entry.id}
     response_dict = edit(dummy_get_request)
@@ -44,7 +44,7 @@ def test_edit_view(dbtransaction, new_entry, dummy_get_request):
 
 
 def test_edit_view_post(dbtransaction, new_entry, dummy_post_request):
-    """Test that the add view returns a dict containing the proper form."""
+    """Test that the edit view returns a dict containing the proper form."""
     from journalapp.views import edit
     dummy_post_request.path = '/edit'
     dummy_post_request.method = "POST"
@@ -85,7 +85,7 @@ def test_new_view_post(dbtransaction, dummy_post_request):
 
 
 def test_new_view_dupe(dbtransaction, dummy_post_request):
-    """Test that the add_view returns a dict containing the proper form."""
+    """Test that the new view returns a dict containing the proper form."""
     from journalapp.views import new
     dummy_post_request.path = '/new'
     response1 = new(dummy_post_request)
@@ -95,7 +95,8 @@ def test_new_view_dupe(dbtransaction, dummy_post_request):
 
 
 def test_detail_error(dbtransaction, dummy_get_request):
-    """Test that detail page gives a 404 when entry ID does not exist."""
+    """Test that detail page gives a HTTPNotFound when entry
+    ID does not exist."""
     from journalapp.views import detail
     dummy_get_request.matchdict = {'pkey': 9999}
     with pytest.raises(HTTPNotFound):
@@ -103,7 +104,8 @@ def test_detail_error(dbtransaction, dummy_get_request):
 
 
 def test_edit_error(dbtransaction, dummy_get_request):
-    """Test that edit page gives a 404 when entry ID does not exist."""
+    """Test that edit page gives a HTTPNotFound when entry
+    ID does not exist."""
     from journalapp.views import edit
     dummy_get_request.matchdict = {'pkey': 9999}
     with pytest.raises(HTTPNotFound):
