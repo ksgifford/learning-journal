@@ -1,15 +1,11 @@
 # coding=utf-8
 from .models import DBSession, Entry
 from .form_new import NewBlogEntryForm
-# from jinja2 import Markup
-
 from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 from pyramid.view import view_config
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
 from webob.multidict import NoVars
-
-# import markdown
 
 
 def query_table():
@@ -79,8 +75,3 @@ def edit(request):
             form.errors.setdefault('error', []).append("Ah oh something "
                                                        "went wrong")
     return {'form': form}
-
-
-# def render_markdown(content):
-#     output = Markup(markdown.markdown(content))
-#     return output

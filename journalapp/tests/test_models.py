@@ -24,7 +24,8 @@ def test_title(dbtransaction):
     new_model = Entry(title="Blog Post", text="my entry goes here")
     DBSession.add(new_model)
     DBSession.flush()
-    assert DBSession.query(Entry).order_by(desc(Entry.created))[0].title == "Blog Post"
+    assert DBSession.query(Entry).order_by(
+        desc(Entry.created))[0].title == "Blog Post"
 
 
 def test_text(dbtransaction):

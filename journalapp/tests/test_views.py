@@ -1,11 +1,11 @@
 # coding=utf-8
-import pytest
-from pyramid.httpexceptions import HTTPFound, HTTPNotFound
+from pyramid.httpexceptions import HTTPNotFound
 from sqlalchemy.exc import IntegrityError
 from webob.multidict import MultiDict
-
 from journalapp.form_new import NewBlogEntryForm
 from journalapp.models import DBSession, Entry
+
+import pytest
 
 
 def test_home_view(dbtransaction, new_entry, dummy_get_request):
