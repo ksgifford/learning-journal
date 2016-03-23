@@ -9,15 +9,17 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
     CHANGES = f.read()
 
 requires = [
+    'markdown',
+    'psycopg2',
     'pyramid',
     'pyramid_jinja2',
     'pyramid_debugtoolbar',
     'pyramid_tm',
     'SQLAlchemy',
     'transaction',
-    'zope.sqlalchemy',
     'waitress',
-    'psycopg2',
+    'wtforms',
+    'zope.sqlalchemy',
     ]
 
 
@@ -57,7 +59,8 @@ setup(name='journalapp',
         'test': tests_require,
         'dev': dev_requires,
       },
-      entry_points="""\
+      entry_points=
+      """
       [paste.app_factory]
       main = journalapp:main
       [console_scripts]
