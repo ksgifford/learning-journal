@@ -1,5 +1,5 @@
 # coding=utf-8
-from wtforms import Form, StringField, TextAreaField, validators
+from WTForms import Form, StringField, TextAreaField, validators
 
 
 class NewBlogEntryForm(Form):
