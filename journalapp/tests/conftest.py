@@ -9,8 +9,8 @@ import os
 
 # TEST_DATABASE_URL = 'postgresql+psycopg2://jackbot:@localhost:5432/'
 # TEST_DATABASE_URL = 'postgresql+psycopg2://journalapp:journalapp@localhost:5432/'
-# TEST_DATABASE_URL = os.environ.get('JOURNAL_APP', None)
-TEST_DATABASE_URL = 'sqlite:////tmp/test_db.sqlite'
+TEST_DATABASE_URL = os.environ.get('JOURNAL_APP_TEST', 'sqlite://')
+# TEST_DATABASE_URL = 'sqlite://'
 
 
 @pytest.fixture(scope='session')
@@ -41,7 +41,7 @@ def dbtransaction(request, sqlengine):
     return connection
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def app(config_uri):
     """Create pretend app fixture of our main app."""
     from journalapp import main
@@ -53,10 +53,10 @@ def app(config_uri):
     return TestApp(app)
 
 
-@pytest.fixture()
-def session(dbtransaction):
-    from journalapp.models import DBSession
-    return DBSession
+# @pytest.fixture()
+# def session(dbtransaction):
+#     from journalapp.models import DBSession
+#     return DBSession
 
 
 @pytest.fixture()
@@ -65,11 +65,6 @@ def new_entry(request):
     entry = Entry(title="Test Title", text="Test Text for an entry.")
     DBSession.add(entry)
     DBSession.flush()
-
-    def teardown():
-        DBSession.query(Entry).filter(Entry.id == entry.id).delete()
-
-    request.addfinalizer(teardown)
     return entry
 
 
@@ -99,9 +94,4 @@ def dummy_post_request(request, dummy_request):
     dummy_request.method = 'POST'
     dummy_request.POST = multidict.MultiDict([('title', 'TESTadd'),
                                               ('text', 'TESTadd')])
-
-    def teardown():
-        DBSession.query(Entry).filter(Entry.title == 'TESTadd').delete()
-
-    request.addfinalizer(teardown)
     return dummy_request

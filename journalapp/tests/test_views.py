@@ -1,5 +1,11 @@
 # coding=utf-8
-from form_new import NewBlogEntryForm
+import pytest
+from pyramid.httpexceptions import HTTPFound, HTTPNotFound
+from sqlalchemy.exc import IntegrityError
+from webob.multidict import MultiDict
+
+from journalapp.form_new import NewBlogEntryForm
+from journalapp.models import DBSession, Entry
 
 
 def test_home_view(dbtransaction, new_entry, dummy_get_request):
@@ -13,7 +19,7 @@ def test_home_view(dbtransaction, new_entry, dummy_get_request):
 def test_detail_view(dbtransaction, new_entry, dummy_get_request):
     """Test that detail_view returns the correct Entry page."""
     from journalapp.views import detail
-    dummy_get_request.matchdict = {'entry_id': new_entry.id}
+    dummy_get_request.matchdict = {'pkey': new_entry.id}
     response_dict = detail(dummy_get_request)
     assert response_dict['post'] == new_entry
 
@@ -29,7 +35,7 @@ def test_new_view(dbtransaction, dummy_get_request):
 def test_edit_view(dbtransaction, new_entry, dummy_get_request):
     """Test that the add view returns a dict containing the proper form."""
     from journalapp.views import edit
-    dummy_get_request.matchdict = {'entry_id': new_entry.id}
+    dummy_get_request.matchdict = {'pkey': new_entry.id}
     response_dict = edit(dummy_get_request)
     print(response_dict)
     form = response_dict.get('form', None)
@@ -40,46 +46,65 @@ def test_edit_view(dbtransaction, new_entry, dummy_get_request):
 def test_edit_view_post(dbtransaction, new_entry, dummy_post_request):
     """Test that the add view returns a dict containing the proper form."""
     from journalapp.views import edit
-    entry_id = new_entry.id
     dummy_post_request.path = '/edit'
-    dummy_post_request.matchdict = {'entry_id': entry_id}
+    dummy_post_request.method = "POST"
+    dummy_post_request.POST = MultiDict([
+        ('title', "test post title"),
+        ('text', "test post text")
+    ])
+    dummy_post_request.matchdict = {'pkey': new_entry.id}
     response = edit(dummy_post_request)
     assert response.status_code == 302 and response.title == 'Found'
-    loc_parts = response.location.split('/')
-    assert loc_parts[-2] == 'detail' and int(loc_parts[-1]) == entry_id
+    created_entry = DBSession.query(Entry).filter(
+        Entry.title == "test post title"
+    ).first()
+    assert created_entry is not None
+    expected_url = dummy_post_request.route_url('detail',
+                                                pkey=created_entry.id)
+    assert response.location.endswith(expected_url)
 
 
-def test_add_view_post(dbtransaction, dummy_post_request):
-    """Test that the add_view returns a dict containing the proper form."""
+def test_new_view_post(dbtransaction, dummy_post_request):
+    """Test that the new view returns a dict containing the proper form."""
     from journalapp.views import new
-    dummy_post_request.path = '/add'
+    dummy_post_request.path = '/new'
+    dummy_post_request.method = "POST"
+    dummy_post_request.POST = MultiDict([
+        ('title', "test post title"),
+        ('text', "test post text")
+    ])
     response = new(dummy_post_request)
     assert response.status_code == 302 and response.title == 'Found'
-    loc_parts = response.location.split('/')
-    assert loc_parts[-2] == 'detail' and loc_parts[-1].isdigit()
+    created_entry = DBSession.query(Entry).filter(
+        Entry.title == "test post title"
+    ).first()
+    assert created_entry is not None
+    expected_url = dummy_post_request.route_url('detail',
+                                                pkey=created_entry.id)
+    assert response.location.endswith(expected_url)
 
 
-def test_add_view_dupe(dbtransaction, dummy_post_request):
+def test_new_view_dupe(dbtransaction, dummy_post_request):
     """Test that the add_view returns a dict containing the proper form."""
     from journalapp.views import new
-    dummy_post_request.path = '/add'
+    dummy_post_request.path = '/new'
     response1 = new(dummy_post_request)
     assert response1.status_code == 302 and response1.title == 'Found'
-    response2 = new(dummy_post_request)
-    assert isinstance(response2, dict) and response2['form'].title.errors
+    with pytest.raises(IntegrityError):
+        new(dummy_post_request)
 
 
 def test_detail_error(dbtransaction, dummy_get_request):
     """Test that detail page gives a 404 when entry ID does not exist."""
     from journalapp.views import detail
     dummy_get_request.matchdict = {'pkey': 9999}
-    response = detail(dummy_get_request)
-    assert response.status_code == 404
+    with pytest.raises(HTTPNotFound):
+        detail(dummy_get_request)
 
 
 def test_edit_error(dbtransaction, dummy_get_request):
     """Test that edit page gives a 404 when entry ID does not exist."""
     from journalapp.views import edit
     dummy_get_request.matchdict = {'pkey': 9999}
-    response = edit(dummy_get_request)
-    assert response.status_code == 404
+    with pytest.raises(HTTPNotFound):
+        edit(dummy_get_request)
